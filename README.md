@@ -1,133 +1,376 @@
-# 本地化 AI 支持的多模态英语学习与研究治理一体化平台
+Locally Hosted AI-Supported Multimodal English Learning and Research Governance Platform
 
-英文名称：
+Overview
 
-**A Locally Hosted AI-Supported Multimodal English Learning and Research Governance Platform**
+English Title:
 
-这是前面 System 1 / System 2 / System 3 的合并版。它们不再是三个割裂系统，而是一个统一平台中的三个功能模块：
+A Locally Hosted AI-Supported Multimodal English Learning and Research Governance Platform
 
-- **AI Content Adaptation Module / System 1**：学生或教师上传本地视频，或输入视频主题，生成英文学习视频、旁白、字幕和脚本。
-- **Student Learning Interface**：学生在同一页面观看视频、上传本地视频、输入对话任务，并启动/关闭语音 chatbot。
-- **Teacher Governance Dashboard**：教师实时监控学生会话，调取每个学生的后台对话记录，进行干预、审计、备注和数据导出。
+This platform integrates the previous System 1, System 2, and System 3 into a unified architecture. Rather than functioning as three separate systems, they now operate as interconnected modules within a single platform:
 
-## 运行
+* AI Content Adaptation Module (System 1)
+* Student Learning Interface
+* Teacher Governance Dashboard
+* Research Data Governance Layer
 
-```bash
+⸻
+
+Running the Platform
+
 cd /Users/xiaojiudechaojizhandouji/Documents/Codex/2026-06-08/new-chat/outputs/integrated-local-ai-learning-platform
 ./run.sh
-```
 
-打开：
+Access the platform through:
 
-```text
-学生端：http://127.0.0.1:8790/student
-教师端：http://127.0.0.1:8790/teacher
-```
+Student Interface
 
-教师端默认登录：
+http://127.0.0.1:8790/student
 
-```text
-teacher / teacher-demo
-researcher / researcher-demo
-```
+Teacher Interface
 
-## 根据你的修改意见已调整
+http://127.0.0.1:8790/teacher
 
-### 1. System 1 视频不能播放的问题
+Default teacher accounts:
 
-已重写为浏览器兼容的 MP4 输出：
+Username	Password
+teacher	teacher-demo
+researcher	researcher-demo
 
-- H.264 video
-- AAC audio
-- `yuv420p`
-- `+faststart`
-- VTT 外挂字幕
+⸻
 
-生成的视频通过 `/media/.../learning_video.mp4` 提供给学生端 `<video>` 播放。
+System Architecture
 
-### 2. System 2 语音实时对话
+AI Content Adaptation Module (System 1)
 
-学生端现在有明确的 Chatbot 状态：
+Teachers or students can:
 
-- 点击 **启动 Chatbot**：创建学生 session，启动浏览器语音识别，AI 回复会朗读。
-- 点击 **关闭 Chatbot**：停止语音识别，停止 speech synthesis，后端也标记 `chatbot_listening=false`。
-- 关闭后不会继续听，也不会继续朗读。
-- 如果浏览器不支持 Web Speech API，学生仍可用文字输入。
-- 页面会显示麦克风测试、实时识别文本和 AI 声音风格。
-- AI 朗读时会暂停听写，朗读结束后再恢复，避免把 AI 自己的声音识别成学生发言。
+* Upload local videos
+* Enter a video topic
+* Generate English learning materials automatically
 
-### 2.1 学生端 System 1：本地视频或主题生成英文学习视频
+The module produces:
 
-学生端新增：
+* English learning videos
+* Narration audio
+* Subtitles
+* Learning scripts
+* CEFR-adapted versions (A1/A2/B1)
 
-- 上传本地视频：MP4 / M4V / MOV / WebM，当前本地配置支持 5 分钟以内视频。
-- 学生主界面只保留 choose file 或 video topic；更多设置收在 Settings。
-- 如果没有本地 Whisper，可在 Settings 输入 video notes or transcript。
-- System 1 优先根据原视频转写/说明生成英文版本，不再只按主题套模板。
-- 或直接输入视频主题。
-- System 1 会生成英文脚本、A1/A2/B1 适配脚本、旁白音频、VTT 字幕和浏览器可播放 MP4。
-- 如果使用上传视频，输出视频会使用原视频画面，并配上新生成的英文旁白和字幕。
-- 学生观看这个英文版本后，再启动 System 2 chatbot 对话。
-- System 2 启动后是连续语音循环：学生说话，AI 回答，AI 说完自动继续听。
+⸻
 
-### 3. 学生页面和教师页面分开
-
-- `/student`：只显示学生学习体验，包含视频 + chatbot。
-- `/teacher`：只显示教师治理与监控，不和学生页面混在一起。
-
-### 4. 学生可以直接看到 System 1 的视频
-
-学生端加载当前教师生成的视频材料，并显示：
-
-- 视频播放器
-- 字幕 track
-- 学习主题
-- 关键词
-- chatbot 对话区
-
-### 5. 教师端是 System 3 相关页面
-
-教师端包含：
-
-- 研究监控总览
-- 学生对话后台搜索
-- 学生研究画像
-- 实时学生 session 列表
-- turn count
-- participation indicators
-- reasoning indicators
-- average English ratio
-- speech / typed input count
-- uploaded video metadata
-- student dialogue task
-- flags / safeguarding events
-- pause / resume / terminate
-- live transcript
-- explainability audit
-- teacher notes
-- full session record retrieval
-- anonymised dataset export
-
-### 6. 三个系统已经连接成一个系统
-
-现在是一个后台服务、一个共享数据层：
-
-```text
-AI Content Adaptation Module
-        ↓
 Student Learning Interface
-        ↓
-AI Dialogic Interaction Module
-        ↓
+
+Students can:
+
+* Watch generated learning videos
+* Upload local videos
+* Enter dialogue tasks
+* Start or stop the AI voice chatbot
+* Participate in spoken or text-based English conversations
+
+The learning experience combines multimodal content consumption with AI-supported dialogic interaction.
+
+⸻
+
 Teacher Governance Dashboard
-        ↓
+
+Teachers and researchers can:
+
+* Monitor student sessions in real time
+* Access dialogue histories
+* Intervene when necessary
+* Add annotations and notes
+* Conduct auditing and governance activities
+* Export research datasets
+
+⸻
+
+Improvements Implemented
+
+1. Browser-Compatible Video Playback
+
+The previous playback issue in System 1 has been resolved.
+
+Generated videos now use:
+
+* H.264 video encoding
+* AAC audio encoding
+* yuv420p pixel format
+* +faststart optimization
+* External VTT subtitles
+
+Videos are served through:
+
+/media/.../learning_video.mp4
+
+and can be played directly using the HTML5 <video> component.
+
+⸻
+
+2. Real-Time Voice Dialogue (System 2)
+
+The student interface now provides explicit chatbot controls.
+
+Start Chatbot
+
+When students click Start Chatbot:
+
+* A student session is created
+* Browser speech recognition is activated
+* AI responses are generated and spoken aloud
+
+Stop Chatbot
+
+When students click Stop Chatbot:
+
+* Speech recognition stops
+* Speech synthesis stops
+* The backend records chatbot_listening = false
+
+The chatbot will no longer listen or speak until restarted.
+
+Browser Compatibility
+
+If Web Speech API is unavailable:
+
+* Students can continue using text-based interaction
+
+Additional interface features include:
+
+* Microphone testing
+* Real-time speech transcription
+* AI voice style indicators
+
+To prevent self-recognition:
+
+* Speech recognition pauses while the AI is speaking
+* Recognition automatically resumes after AI speech ends
+
+⸻
+
+2.1 Student-Side Video Adaptation Workflow
+
+Students can now:
+
+Upload Local Videos
+
+Supported formats:
+
+* MP4
+* M4V
+* MOV
+* WebM
+
+Current local deployment supports videos up to approximately five minutes.
+
+Enter a Video Topic
+
+Students may alternatively provide a topic without uploading a video.
+
+Optional Transcript Support
+
+If local Whisper transcription is unavailable, students can manually provide:
+
+* Video notes
+* Existing transcripts
+
+Adaptation Process
+
+The system prioritizes adaptation from the original uploaded video.
+
+Rather than generating content solely from a topic template, it attempts to:
+
+* Transcribe the source video
+* Interpret supplied notes
+* Generate an English learning version based on original content
+
+Outputs include:
+
+* English learning scripts
+* CEFR-level adaptations (A1/A2/B1)
+* Narration audio
+* VTT subtitles
+* Browser-compatible MP4 videos
+
+When a local video is uploaded:
+
+* Original video footage is preserved
+* Newly generated English narration is added
+* English subtitles are overlaid
+
+Students then watch the adapted version and proceed to dialogue practice using System 2.
+
+Continuous Voice Interaction
+
+Once activated:
+
+1. Student speaks
+2. AI responds
+3. AI finishes speaking
+4. Listening automatically resumes
+
+This creates a continuous conversational loop.
+
+⸻
+
+3. Separate Student and Teacher Interfaces
+
+Student Interface
+
+/student
+
+Displays:
+
+* Learning videos
+* Chatbot interaction tools
+* Dialogue activities
+
+Teacher Interface
+
+/teacher
+
+Displays:
+
+* Governance tools
+* Monitoring functions
+* Research dashboards
+
+Student and teacher experiences are fully separated.
+
+⸻
+
+4. Student Access to Learning Videos
+
+Students can directly access learning materials generated through System 1.
+
+Displayed content includes:
+
+* Video player
+* Subtitle tracks
+* Learning topics
+* Vocabulary keywords
+* Dialogue activities
+* Chatbot interaction area
+
+⸻
+
+5. Teacher Governance Dashboard (System 3)
+
+The teacher dashboard includes:
+
+Research Monitoring Overview
+
+* Active student sessions
+* Participation summaries
+* Learning analytics
+
+Student Dialogue Retrieval
+
+* Search dialogue histories
+* Review interaction records
+
+Student Research Profiles
+
+* Individual learner analytics
+* Longitudinal participation records
+
+Real-Time Session Monitoring
+
+Including:
+
+* Turn count
+* Participation indicators
+* Reasoning indicators
+* Average English language ratio
+* Speech vs. typed interaction counts
+* Uploaded video metadata
+* Assigned dialogue tasks
+
+Governance Functions
+
+* Safeguarding flags
+* Pause session
+* Resume session
+* Terminate session
+
+Transparency and Accountability
+
+* Live transcript viewing
+* Explainability audit records
+* Teacher annotations
+* Full session retrieval
+
+Research Data Export
+
+* Anonymized dataset generation
+* Export-ready research records
+
+⸻
+
+6. Integrated Platform Architecture
+
+The three previous systems now operate as a single connected platform:
+
+AI Content Adaptation Module
+            ↓
+Student Learning Interface
+            ↓
+AI Dialogic Interaction Module
+            ↓
+Teacher Governance Dashboard
+            ↓
 Research Data Governance Layer
-```
 
-## 当前实现边界
+All modules share:
 
-- 语音识别依赖浏览器 Web Speech API；不同浏览器/学校设备支持程度不同。
-- 当前 chatbot 是本地规则型 Tech-SEDA 对话引擎，后续可接本地 Qwen/Ollama。
-- 当前视频为本地生成的浏览器可播学习视频，字幕通过 VTT track 显示。
-- 当前 access control 是 demo passcode；正式研究部署需要真实账号和审计签名。
-- 数据导出已匿名化，但正式研究仍建议使用机构批准的加密存储方案。
+* One backend service
+* One data infrastructure
+* One governance framework
+
+⸻
+
+Current Implementation Boundaries
+
+Speech Recognition
+
+Voice interaction currently depends on the browser’s Web Speech API.
+
+Support may vary across:
+
+* Browsers
+* School devices
+* Operating systems
+
+Dialogue Engine
+
+The current chatbot uses a locally hosted rule-based Tech-SEDA dialogic engine.
+
+Future versions may integrate:
+
+* Qwen
+* Ollama
+* Other locally deployed large language models
+
+Video Generation
+
+Generated learning videos are locally produced and browser-compatible.
+
+Subtitles are provided through VTT tracks.
+
+Access Control
+
+Current authentication uses demonstration passcodes.
+
+Formal educational and research deployments should implement:
+
+* Institutional authentication
+* User management
+* Audit signatures
+
+Research Data Storage
+
+Although exported datasets are anonymized, formal research deployments should additionally employ:
+
+* Institutionally approved encrypted storage
+* Secure research data governance procedures
+* Ethics-compliant data management frameworks
