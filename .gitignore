@@ -1,0 +1,26 @@
+# Runtime
+runtime/
+models/
+.venv-tts/
+
+# Media
+*.mp4
+*.mov
+*.m4v
+*.wav
+*.m4a
+*.aiff
+
+# Python
+__pycache__/
+*.pyc
+
+# Mac
+.DS_Store
+
+# Secrets
+*.key
+.env
+
+# IDE
+.idea/

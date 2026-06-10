@@ -1,0 +1,46 @@
+# models
+models/
+
+# runtime outputs
+runtime/
+
+# media
+*.mp4
+*.mov
+*.m4v
+*.wav
+*.m4a
+*.aiff
+
+# secrets
+*.key
+.env
+
+# python
+__pycache__/
+*.pyc# modruntime/
+*.mp4
+*.mov
+*.m4a
+*.wav
+*.aiff
+*.mp3
+*.zip
+.DS_Store
+
+# runtime files
+runtime/
+models/
+*.mp4
+*.m4a
+*.aiff
+*.wav
+
+# secrets
+*.key
+*.secret
+runtime/server_secret.key
+runtime/
+models/
+*.mp4
+*.key

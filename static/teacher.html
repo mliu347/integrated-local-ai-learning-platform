@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Teacher Governance Dashboard</title>
+    <link rel="stylesheet" href="/static/teacher.css" />
+  </head>
+  <body>
+    <div class="teacher-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">AI</div>
+          <div>
+            <h1>Teacher Governance Dashboard</h1>
+            <p>Live monitoring · audit · export</p>
+          </div>
+        </div>
+
+        <form id="loginForm" class="login-panel">
+          <h2>Local login</h2>
+          <label>
+            Role
+            <select name="role">
+              <option value="teacher">teacher</option>
+              <option value="researcher">researcher</option>
+            </select>
+          </label>
+          <label>
+            passcode
+            <input name="passcode" value="teacher-demo" />
+          </label>
+          <button class="primary-action" type="submit">Login</button>
+          <p>Teacher: teacher-demo · Researcher: researcher-demo</p>
+        </form>
+
+        <section class="content-panel">
+          <h2>Content adaptation module</h2>
+          <form id="materialForm">
+            <label>
+              Topic
+              <select name="topic">
+                <option value="online-safety">Online safety</option>
+                <option value="local-culture">Local culture</option>
+                <option value="friendship">Friendship</option>
+              </select>
+            </label>
+            <label>
+              Custom topic
+              <input name="customTopic" placeholder="Optional" />
+            </label>
+            <label>
+              Level
+              <select name="level">
+                <option value="A1">A1</option>
+                <option value="A2" selected>A2</option>
+                <option value="B1">B1</option>
+              </select>
+            </label>
+            <label>
+              Subtitles
+              <select name="subtitleMode">
+                <option value="bilingual">bilingual</option>
+                <option value="english">english</option>
+              </select>
+            </label>
+            <button class="primary-action" type="submit">Generate current video</button>
+          </form>
+        </section>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <h2>Integrated Local AI English Learning and Research Governance Platform</h2>
+            <p>Student page: <a href="/student" target="_blank">/student</a></p>
+          </div>
+          <span id="appStatus" class="status-pill">Ready</span>
+        </header>
+
+        <section class="dashboard-grid">
+          <section class="panel overview-panel">
+            <div class="panel-title">
+              <h2>System 3 Governance Overview</h2>
+              <span id="overviewStamp" class="status-pill">No data</span>
+            </div>
+            <div id="overviewGrid" class="metrics-grid overview-grid"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Student Account Roster</h2>
+              <button id="refreshState" class="ghost-action" type="button">Refresh</button>
+            </div>
+            <p class="panel-help">Up to 500 anonymised student accounts. Accounts connect automatically when students register or start the chatbot.</p>
+            <div id="accountList" class="account-list"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Live Student Sessions</h2>
+              <button id="exportAllDataset" class="ghost-action" type="button">Export all</button>
+            </div>
+            <label class="search-box">
+              Search student / topic / status
+              <input id="sessionSearch" placeholder="ANON-STUDENT-001, A2, friendship..." />
+            </label>
+            <div id="sessionList" class="session-list"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Macro-level Monitoring</h2>
+              <span id="selectedStatus" class="status-pill">No session</span>
+            </div>
+            <div id="metricsGrid" class="metrics-grid"></div>
+            <div class="action-row monitor-actions">
+              <button id="pauseSession" class="ghost-action" type="button">Pause</button>
+              <button id="resumeSession" class="ghost-action" type="button">Resume</button>
+              <button id="flagSession" class="ghost-action" type="button">Flag review</button>
+              <button id="terminateSession" class="danger-action" type="button">Terminate</button>
+            </div>
+            <div class="dashboard-block">
+              <h3>Multi-turn Patterns / Flags</h3>
+              <div id="patternList" class="pattern-list"></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Selected Student Record</h2>
+              <button id="loadRecord" class="ghost-action" type="button">Open backend record</button>
+            </div>
+            <div id="profileGrid" class="profile-grid"></div>
+            <div class="dashboard-block">
+              <h3>Teacher notes</h3>
+              <textarea id="teacherNote" rows="3" placeholder="Record teacher observation, intervention reason, or classroom event."></textarea>
+              <div class="action-row note-actions">
+                <button id="saveTeacherNote" class="ghost-action" type="button">Save note</button>
+              </div>
+              <div id="noteList" class="note-list"></div>
+            </div>
+          </section>
+
+          <section class="panel transcript-panel">
+            <div class="panel-title">
+              <h2>Session Replay</h2>
+            </div>
+            <div id="transcript" class="transcript"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Explainability Audit and Research Data</h2>
+              <div class="action-row">
+                <button id="loadAudit" class="ghost-action" type="button">Explainability audit</button>
+                <button id="exportDataset" class="ghost-action" type="button">Export selected</button>
+              </div>
+            </div>
+            <div id="auditList" class="audit-list"></div>
+          </section>
+
+          <section class="panel overview-panel research-panel">
+            <div class="panel-title">
+              <h2>Research Orchestration Layer</h2>
+              <span id="researchStamp" class="status-pill">Not loaded</span>
+            </div>
+            <div id="researchSummary" class="metrics-grid overview-grid"></div>
+          </section>
+
+          <section class="panel research-panel">
+            <div class="panel-title">
+              <h2>Class / Group Management</h2>
+            </div>
+            <form id="classForm" class="research-form">
+              <label>Class ID <input name="class_id" placeholder="G8-A" /></label>
+              <label>Grade <input name="grade" value="Grade 8" /></label>
+              <label>Teacher ID <input name="teacher_id" placeholder="TEACHER-001" /></label>
+              <label>
+                Condition
+                <select name="condition">
+                  <option value="treatment">treatment</option>
+                  <option value="comparison">comparison</option>
+                </select>
+              </label>
+              <label>Matched pair ID <input name="pair_id" placeholder="PAIR-1" /></label>
+              <button class="primary-action" type="submit">Save class</button>
+            </form>
+          </section>
+
+          <section class="panel research-panel">
+            <div class="panel-title">
+              <h2>Consent and Student Assignment</h2>
+            </div>
+            <form id="researchStudentForm" class="research-form">
+              <label>Student ID <input name="participant_code" placeholder="ANON-STUDENT-001" /></label>
+              <label>Class ID <input name="class_id" placeholder="G8-A" /></label>
+              <label>Level <select name="level"><option>A1</option><option selected>A2</option><option>B1</option></select></label>
+              <label>Condition <select name="condition"><option value="treatment">treatment</option><option value="comparison">comparison</option></select></label>
+              <label class="checkline"><input name="guardian_consent" type="checkbox" checked /> Guardian consent</label>
+              <label class="checkline"><input name="student_assent" type="checkbox" checked /> Student assent</label>
+              <label class="checkline"><input name="withdrawn" type="checkbox" /> Withdrawn</label>
+              <button class="primary-action" type="submit">Save student</button>
+            </form>
+          </section>
+
+          <section class="panel research-panel">
+            <div class="panel-title">
+              <h2>Lesson / Unit Tagging</h2>
+            </div>
+            <form id="lessonForm" class="research-form">
+              <label>Unit <input name="unit" value="Unit 1" /></label>
+              <label>Class ID <input name="class_id" placeholder="Optional class" /></label>
+              <label>Lesson cycle <select name="lesson_cycle"><option value="pre_class">pre-class</option><option value="in_class" selected>in-class</option><option value="post_class">post-class</option></select></label>
+              <label>Curriculum focus <input name="curriculum_focus" placeholder="vocabulary, reading, speaking..." /></label>
+              <button class="primary-action" type="submit">Set current lesson</button>
+            </form>
+          </section>
+
+          <section class="panel research-panel">
+            <div class="panel-title">
+              <h2>Baseline and Outcome Data</h2>
+            </div>
+            <form id="assessmentForm" class="research-form single-column">
+              <label>
+                CSV import
+                <textarea name="csv" rows="6" placeholder="participant_code,measure,timepoint,score,max_score,class_id,condition,date&#10;ANON-STUDENT-001,vocabulary,pretest,72,100,G8-A,treatment,2026-06-09"></textarea>
+              </label>
+              <button class="primary-action" type="submit">Import scores</button>
+            </form>
+          </section>
+
+          <section class="panel research-panel">
+            <div class="panel-title">
+              <h2>Fidelity and BAU Comparison Logs</h2>
+            </div>
+            <form id="fidelityForm" class="research-form">
+              <label>Class ID <input name="class_id" placeholder="G8-A" /></label>
+              <label>Unit <input name="unit" placeholder="Unit 1" /></label>
+              <label>AI minutes <input name="ai_minutes" type="number" min="0" value="0" /></label>
+              <label class="checkline"><input name="implemented_as_planned" type="checkbox" checked /> Implemented as planned</label>
+              <label class="wide">Notes <textarea name="notes" rows="3" placeholder="pacing, technology issue, teacher mediation..."></textarea></label>
+              <button class="primary-action" type="submit">Save fidelity</button>
+            </form>
+            <form id="comparisonForm" class="research-form">
+              <label>Class ID <input name="class_id" placeholder="G8-D" /></label>
+              <label>Unit <input name="unit" placeholder="Unit 1" /></label>
+              <label>Activity type <input name="activity_type" placeholder="BAU reading / dictation / grammar" /></label>
+              <label class="wide">Description <textarea name="description" rows="3" placeholder="What happened in the comparison class?"></textarea></label>
+              <button class="ghost-action" type="submit">Save BAU log</button>
+            </form>
+          </section>
+
+          <section class="panel research-panel">
+            <div class="panel-title">
+              <h2>Tech-SEDA Coding and ENA Export</h2>
+              <button id="exportEna" class="ghost-action" type="button">Export ENA CSV</button>
+            </div>
+            <form id="codingForm" class="research-form">
+              <label>Session ID <input name="session_id" placeholder="session id" /></label>
+              <label>Turn <input name="turn" type="number" min="1" /></label>
+              <label>Coder ID <input name="coder_id" placeholder="CODER-A" /></label>
+              <label>Tech-SEDA code <input name="tech_seda_code" placeholder="EOR, BI, CH..." /></label>
+              <label class="wide">Coder note <textarea name="note" rows="3" placeholder="Reason for coding decision"></textarea></label>
+              <button class="primary-action" type="submit">Save coding</button>
+            </form>
+          </section>
+
+          <section class="panel research-panel">
+            <div class="panel-title">
+              <h2>IMI / Motivation Survey</h2>
+            </div>
+            <form id="imiForm" class="research-form">
+              <label>Student ID <input name="participant_code" placeholder="ANON-STUDENT-001" /></label>
+              <label>Timepoint <input name="timepoint" placeholder="week-1 / posttest" /></label>
+              <label>Autonomy <input name="autonomy" type="number" min="1" max="7" step="0.1" /></label>
+              <label>Competence <input name="competence" type="number" min="1" max="7" step="0.1" /></label>
+              <label>Relatedness <input name="relatedness" type="number" min="1" max="7" step="0.1" /></label>
+              <label>Interest <input name="interest" type="number" min="1" max="7" step="0.1" /></label>
+              <button class="primary-action" type="submit">Save IMI</button>
+            </form>
+          </section>
+
+          <section class="panel research-panel">
+            <div class="panel-title">
+              <h2>Teacher Reflection and Safeguarding Workflow</h2>
+            </div>
+            <form id="reflectionForm" class="research-form">
+              <label>Teacher ID <input name="teacher_id" placeholder="TEACHER-001" /></label>
+              <label>Class ID <input name="class_id" placeholder="G8-A" /></label>
+              <label>Source <select name="source"><option>reflective_journal</option><option>field_note</option><option>peer_observation</option><option>interview_memo</option></select></label>
+              <label class="wide">Reflection <textarea name="text" rows="4" placeholder="Affordances, constraints, tensions, classroom control, student participation..."></textarea></label>
+              <button class="primary-action" type="submit">Save reflection</button>
+            </form>
+            <form id="safeguardingForm" class="research-form">
+              <label>Student ID <input name="participant_code" placeholder="ANON-STUDENT-001" /></label>
+              <label>Session ID <input name="session_id" placeholder="optional" /></label>
+              <label>Status <select name="status"><option>unresolved</option><option>reviewed</option><option>referred</option><option>excluded</option><option>closed</option></select></label>
+              <label>Severity <select name="severity"><option>low</option><option selected>medium</option><option>high</option></select></label>
+              <label class="wide">Case note <textarea name="note" rows="3" placeholder="Review decision or safeguarding action"></textarea></label>
+              <button class="ghost-action" type="submit">Save case</button>
+            </form>
+          </section>
+
+          <section class="panel research-panel">
+            <div class="panel-title">
+              <h2>Dataset Approval Gate</h2>
+            </div>
+            <form id="approvalForm" class="research-form">
+              <label>Scope <select name="scope"><option>all</option><option>class</option><option>condition</option><option>selected</option></select></label>
+              <label>Class ID <input name="class_id" placeholder="optional" /></label>
+              <label>Condition <select name="condition"><option value="">any</option><option value="treatment">treatment</option><option value="comparison">comparison</option></select></label>
+              <label class="checkline"><input name="exclude_flagged" type="checkbox" checked /> Exclude unresolved flagged data</label>
+              <label class="wide">Approval note <textarea name="approval_note" rows="3" placeholder="Researcher approval note before export"></textarea></label>
+              <button class="primary-action" type="submit">Save approval</button>
+            </form>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="/static/teacher.js" defer></script>
+  </body>
+</html>

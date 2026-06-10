@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Student Learning Interface</title>
+    <script>
+      if (window.location.protocol === "file:") {
+        window.location.replace("http://127.0.0.1:8790/student");
+      }
+    </script>
+    <link rel="stylesheet" href="/static/student.css" />
+  </head>
+  <body>
+    <main class="student-shell">
+      <section class="system1-builder">
+        <div class="system1-header">
+          <div>
+            <h1>System 1 · Make English Video</h1>
+            <p>Choose a video or type a topic. Then watch the English video.</p>
+          </div>
+          <div class="header-actions">
+            <span id="connectionStatus" class="status-pill">Loading</span>
+            <button id="settingsToggle" class="icon-action" type="button" aria-expanded="false" aria-controls="settingsPanel">Settings</button>
+          </div>
+        </div>
+
+        <div class="mode-tabs" role="tablist" aria-label="System 1 mode">
+          <button id="modeVideo" class="mode-tab active" type="button">Choose file</button>
+          <button id="modeTopic" class="mode-tab" type="button">Video topic</button>
+        </div>
+
+        <form id="system1VideoForm" class="system1-form">
+          <label class="file-card">
+            <span>Video file</span>
+            <input id="system1VideoFile" name="video" type="file" accept="video/mp4,video/x-m4v,video/quicktime,video/webm" />
+            <strong id="selectedVideoName">No file selected</strong>
+          </label>
+          <button id="generateFromVideo" class="primary-action" type="submit">Make English video</button>
+          <span id="system1VideoStatus" class="inline-status">Ready</span>
+        </form>
+
+        <form id="system1TopicForm" class="system1-form hidden">
+          <label class="topic-card">
+            <span>Video topic</span>
+            <input id="topicInput" name="topic" placeholder="friendship, hometown culture, online safety..." />
+          </label>
+          <button id="generateFromTopic" class="primary-action" type="submit">Make English video</button>
+          <span id="system1TopicStatus" class="inline-status">Ready</span>
+        </form>
+
+        <section id="settingsPanel" class="settings-panel hidden">
+          <div class="settings-grid">
+            <label>
+              Video notes or transcript
+              <textarea id="manualTranscript" name="manualTranscript" rows="4" placeholder="Optional. If local Whisper is not installed, write the Chinese words or a short Chinese summary here. System 1 will translate it into English and speak it."></textarea>
+            </label>
+            <label>
+              Source topic
+              <input id="sourceTopic" name="sourceTopic" placeholder="Optional short topic" />
+            </label>
+            <label>
+              Source language
+              <select id="sourceLanguage" name="sourceLanguage">
+                <option value="auto" selected>Auto detect</option>
+                <option value="zh">Chinese</option>
+                <option value="en">English</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+              </select>
+            </label>
+            <label>
+              English level
+              <select id="system1VideoLevel" name="level">
+                <option value="A1">A1</option>
+                <option value="A2" selected>A2</option>
+                <option value="B1">B1</option>
+              </select>
+            </label>
+            <label>
+              Topic level
+              <select id="system1TopicLevel" name="level">
+                <option value="A1">A1</option>
+                <option value="A2" selected>A2</option>
+                <option value="B1">B1</option>
+              </select>
+            </label>
+            <label>
+              Subtitles
+              <select id="system1VideoSubtitles" name="subtitleMode">
+                <option value="english" selected>English only</option>
+                <option value="bilingual">English + hint</option>
+              </select>
+            </label>
+            <label>
+              Topic subtitles
+              <select id="system1TopicSubtitles" name="subtitleMode">
+                <option value="english" selected>English only</option>
+                <option value="bilingual">English + hint</option>
+              </select>
+            </label>
+            <label>
+              AI voice
+              <select id="voiceStyle" name="voiceStyle">
+                <option value="expressive" selected>Expressive</option>
+                <option value="friendly">Friendly</option>
+                <option value="calm">Slow</option>
+                <option value="bright">Bright</option>
+              </select>
+            </label>
+            <label class="check-row">
+              <input id="maskTop" type="checkbox" checked />
+              Hide top title or watermark
+            </label>
+            <label class="check-row">
+              <input id="maskBottom" type="checkbox" checked />
+              Hide original bottom captions
+            </label>
+            <label class="settings-wide">
+              Custom hide area
+              <input id="customMask" placeholder="Optional: x,y,w,h as 0-1. Example 0.72,0,0.28,0.15" />
+            </label>
+            <label class="settings-wide">
+              Text chat backup
+              <textarea id="studentText" rows="3" placeholder="Use only when microphone is not available."></textarea>
+            </label>
+            <button id="sendTextTurn" class="ghost-action" type="button">Send text</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="video-panel">
+        <div class="panel-title">
+          <div>
+            <h2 id="materialTitle">English Video</h2>
+            <p id="materialMeta"></p>
+          </div>
+          <div class="video-actions">
+            <label class="subtitle-switch">
+              Subtitles
+              <select id="playbackSubtitles">
+                <option value="english" selected>English</option>
+                <option value="bilingual">English + Chinese</option>
+                <option value="off">Off</option>
+              </select>
+            </label>
+            <span id="system1Ready" class="status-pill">Waiting</span>
+          </div>
+        </div>
+        <div class="video-frame" id="videoFrame"></div>
+      </section>
+
+      <section class="chat-panel">
+        <div class="panel-title">
+          <div>
+            <h2>System 2 · Live Chatbot</h2>
+            <p id="sessionLine">No active session</p>
+          </div>
+          <span id="chatbotState" class="status-pill">Closed</span>
+        </div>
+
+        <form id="startForm" class="chat-controls">
+          <label class="student-account">
+            <span>Student account</span>
+            <input id="participantCode" name="participantCode" value="ANON-STUDENT-001" maxlength="32" />
+          </label>
+          <button id="registerStudent" class="ghost-action" type="button">Connect account</button>
+          <button id="startChatbot" class="primary-action" type="submit">Start Chatbot</button>
+          <button id="stopChatbot" class="danger-action" type="button">Stop</button>
+          <button id="requestMic" class="ghost-action" type="button">Test mic</button>
+          <span id="continuousVoiceState" class="inline-status">Voice off</span>
+        </form>
+        <p id="accountStatus" class="account-status">Not connected to teacher dashboard.</p>
+
+        <div class="voice-console">
+          <div>
+            <h3>Live voice</h3>
+            <p id="speechNotice">Start the chatbot when you are ready.</p>
+          </div>
+          <div class="live-transcript">
+            <strong>You said</strong>
+            <p id="liveTranscript">No voice yet.</p>
+          </div>
+        </div>
+
+        <div id="chatLog" class="chat-log"></div>
+        <textarea id="studentTask" class="visually-hidden" rows="1">I want to discuss the English video.</textarea>
+      </section>
+    </main>
+
+    <script src="/static/student.js" defer></script>
+  </body>
+</html>

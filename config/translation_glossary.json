@@ -1,0 +1,51 @@
+{
+  "source_terms": [
+    {
+      "source": ["小气", "抠门", "吝啬"],
+      "target": "stingy",
+      "sentence": "The person is being stingy."
+    },
+    {
+      "source": ["大方"],
+      "target": "generous",
+      "sentence": "The person is generous."
+    },
+    {
+      "source": ["浪费钱", "乱花钱"],
+      "target": "waste money",
+      "sentence": "The person is wasting money."
+    },
+    {
+      "source": ["搭讪"],
+      "target": "start a conversation",
+      "sentence": "The person is trying to start a conversation."
+    },
+    {
+      "source": ["本地文化", "地方文化"],
+      "target": "local culture",
+      "sentence": "The video is about local culture."
+    }
+  ],
+  "english_post_edits": [
+    {
+      "pattern": "\\bXiao\\s*Qi\\b|\\bXiaoqi\\b|\\bsmall\\s+gas\\b",
+      "replace": "stingy",
+      "when_source_contains": ["小气", "抠门", "吝啬"]
+    },
+    {
+      "pattern": "\\bbig fan\\b",
+      "replace": "start a conversation",
+      "when_source_contains": ["搭讪"]
+    },
+    {
+      "pattern": "\\bsucceed\\s+in\\s+flirting\\b",
+      "replace": "manage to start a conversation",
+      "when_source_contains": ["搭讪"]
+    },
+    {
+      "pattern": "\\bflirt(?:ing)?\\b|\\bhit\\s+on\\b",
+      "replace": "start a conversation",
+      "when_source_contains": ["搭讪"]
+    }
+  ]
+}
